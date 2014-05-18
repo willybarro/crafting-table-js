@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'minecraftfont';
+	src: url('./minecraftfont.eot');
+	src: local('minecraftfont'), url('./minecraftfont.woff') format('woff'), url('./minecraftfont.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_1412">Text with this font applied</p> */
+.fontsforweb_fontid_1412 {
+	font-family: 'minecraftfont' !important;
+}
+
+/* Font downloaded from FontsForWeb.com */

@@ -2,9 +2,86 @@
 <html>
 <head>
 	<title></title>
-	<script src="minecraft.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="js/draggabilly/draggabilly.pkgd.min.js"></script>
+	<script src="js/ctjs/minecraft.js"></script>
+	<script src="js/ctjs/ctjs.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			ctjs.drag.bindAllIngredients();
+		});
+	</script>
+	<link rel="stylesheet" href="index.css" media="all" />
+	<link rel="stylesheet" href="font/minecraftfont/font.css">
 </head>
 <body>
-
+	<h1>Crafting Table JS</h1>
+	<p>Minecraft crafting table written in Javascript</p>
+	<div class="crafting-holder">
+		<div class="crafting clearfix">
+			<div class="recipe">
+				<h6>Crafting</h6>
+				<table class="crafting-table">
+					<tr>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+						<td>
+							<span class="grid" grid grid-filled="false"><br /></span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="arrow"></div>
+			<div class="output">
+				<span class="grid-large" grid grid-filled="false"><br /></span>
+			</div>
+		</div>
+		<div class="items clearfix">
+			<h6>Items</h6>
+		</div>
+		<div class="inventory clearfix">
+			<h6>Inventory</h6>
+			<div>
+				<span class="grid" grid grid-filled="false"><img class="ingredient" src="http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Oak_Wood_Planks.png?version=a3f9f595f866696034eff1e38067789c" /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+				<span class="grid" grid grid-filled="false"><br /></span>
+			</div>
+		</div>
+	</div>
+	<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 </body>
 </html>

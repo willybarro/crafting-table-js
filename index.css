@@ -1,0 +1,100 @@
+/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+body {
+	background: #eee;
+	font-family: 'minecraftfont';
+	padding: 10px;
+	color: #404040;
+}
+h1 {font-size: 3em;}
+h2 {font-size: 2.6em;}
+h3 {font-size: 2.2em;}
+h4 {font-size: 1.8em;}
+h5 {font-size: 1.4em;}
+h6 {font-size: 1.0em;}
+h1, h2, h3, h4, h5, h6 {
+	margin-bottom: 4px;
+	
+}
+p{ margin: 10px 0;}
+
+.clearfix:before,.clearfix:after{content:"";display:table}
+.clearfix:after{clear:both}
+
+.ingredient { cursor: pointer; }
+
+.crafting-holder {
+	float:left;
+	padding: 10px;
+	margin-top: 10px;
+	background: #C6C6C6;
+	border: 2px solid #373737;
+	border-right-color: #FFF;
+	border-bottom-color: #FFF;
+}
+
+.crafting {
+	width: 225px;
+	margin: 0 auto;
+}
+
+.crafting-table {
+	background: #C6C6C6;
+	border: outset 2px #999;
+	padding: 6px;
+	text-align: left !important;
+	margin-left: 2px;
+}
+
+.crafting-table {
+	border: 0;
+}
+
+.crafting-table td {
+	border: none;
+	padding: 0;
+}
+
+.grid, .grid-large {
+	display: table-cell;
+	text-align: center !important;
+	background-color: #8B8B8B;
+	border: 2px solid #373737;
+	border-right-color: #FFF;
+	border-bottom-color: #FFF;
+	vertical-align: middle;
+	height: 100%;
+}
+.grid img, .grid-large img {
+	vertical-align: middle;
+}
+.grid {
+	width: 2em;
+	height: 2em;
+}
+.grid-large {;
+	width: 3em;
+	height: 3em;
+}
+
+.crafting .recipe { float: left ;}
+.crafting .arrow {
+	width: 32px;
+	height: 27px;
+	margin: 62px 15px 0 15px;
+	float: left;
+	background: url('http://hydra-media.cursecdn.com/minecraft.gamepedia.com/8/86/Grid_layout_Arrow_%28small%29.png?version=e67926f220c560fa401e958053a3bf1f');
+}
+
+.output {
+	padding-top: 50px;
+}
+
+.items {
+	margin-top: 20px;
+}
+
+.inventory {
+	margin-top: 20px;
+}
