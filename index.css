@@ -35,29 +35,21 @@ p{ margin: 10px 0;}
 }
 
 .crafting {
-	width: 225px;
+	width: 230px;
 	margin: 0 auto;
 }
 
 .crafting-table {
 	background: #C6C6C6;
 	border: outset 2px #999;
-	padding: 6px;
 	text-align: left !important;
 	margin-left: 2px;
-}
-
-.crafting-table {
 	border: 0;
 }
 
-.crafting-table td {
-	border: none;
-	padding: 0;
-}
-
 .grid, .grid-large {
-	display: table-cell;
+	float: left;
+	display: block;
 	text-align: center !important;
 	background-color: #8B8B8B;
 	border: 2px solid #373737;
@@ -70,15 +62,18 @@ p{ margin: 10px 0;}
 	vertical-align: middle;
 }
 .grid {
-	width: 2em;
-	height: 2em;
+	width: 32px;
+	height: 32px;
 }
 .grid-large {;
-	width: 3em;
-	height: 3em;
+	width: 48px;
+	height: 48px;
 }
 
-.crafting .recipe { float: left ;}
+.crafting .recipe {
+	float: left;
+	width: 110px;
+}
 .crafting .arrow {
 	width: 32px;
 	height: 27px;
@@ -88,6 +83,7 @@ p{ margin: 10px 0;}
 }
 
 .output {
+	float: left;
 	padding-top: 50px;
 }
 

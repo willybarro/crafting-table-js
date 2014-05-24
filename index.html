@@ -6,56 +6,18 @@
 	<script src="js/draggabilly/draggabilly.pkgd.min.js"></script>
 	<script src="js/ctjs/minecraft.js"></script>
 	<script src="js/ctjs/ctjs.js"></script>
-	<script type="text/javascript">
-		$(function() {
-			ctjs.drag.bindAllIngredients();
-		});
-	</script>
 	<link rel="stylesheet" href="index.css" media="all" />
 	<link rel="stylesheet" href="font/minecraftfont/font.css">
 </head>
 <body>
 	<h1>Crafting Table JS</h1>
 	<p>Minecraft crafting table written in Javascript</p>
+	<p><button value="teste"></button></p>
 	<div class="crafting-holder">
 		<div class="crafting clearfix">
 			<div class="recipe">
 				<h6>Crafting</h6>
-				<table class="crafting-table">
-					<tr>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-						<td>
-							<span class="grid" grid grid-filled="false"><br /></span>
-						</td>
-					</tr>
-				</table>
+				<div id="crafting-table"></div>
 			</div>
 			<div class="arrow"></div>
 			<div class="output">
