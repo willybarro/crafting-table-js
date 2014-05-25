@@ -1,61 +1,77 @@
 var ctjs = {
     init: function() {
         // 
-        ctjs.initCraftingTable();
+        ctjs.craftingTable.init();
+        ctjs.inventory.init();
     },
-    initCraftingTable: function() {
-        var craftingTable = document.querySelector('#crafting-table');
+    
+};
 
-        // Create grid elements
+ctjs.craftingTable = {
+    ingredients: [],
+    init: function() {
+        var craftingTable = document.querySelector('#crafting-table');
+        var craftingTableOutput = document.querySelector('#crafting-table-output');
+
+        // Create grid elements of the crafting table
         for(var i=0; i<9; i++) {
-            var gridElm = new ctjs.gridElement();
+            var gridElm = new ctjs.grid.element();
             craftingTable.appendChild(gridElm);
+            ctjs.craftingTable.ingredients.push(gridElm);
+        }
+
+        // Create output grid
+        var outputElm = new ctjs.grid.element(true);
+        craftingTableOutput.appendChild(outputElm);
+    },
+    getIngredientAt: function(index) {
+        var ingredient = null;
+        if(typeof ctjs.craftingTable.ingredients[index] !== 'undefined') {
+            ingredient = ctjs.craftingTable.ingredients[index].getIngredient();
+        }
+        return ingredient;
+    }
+}
+
+ctjs.inventory = {
+    ingredients: [],
+    init: function(numGrid) {
+        var inventory = document.querySelector('#inventory');
+        var numGrid = numGrid || 60;
+
+        for(var i=0; i<numGrid; i++) {
+            var gridElm = new ctjs.grid.element();
+            inventory.appendChild(gridElm);
+            ctjs.inventory.ingredients.push(gridElm);
 
             if(i == 0) {
-                gridElm.attachIngredient(new ctjs.ingredientElement());
+                gridElm.attachIngredient(new ctjs.ingredient.element());
             }
         }
+    }
+}
 
-    },
-    ingredientElement: function() {
-        var elm = document.createElement('img');
-        elm.className = 'ingredient';
-        elm.src = 'http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Oak_Wood_Planks.png?version=a3f9f595f866696034eff1e38067789c';
-        var grid = elm.parentNode;
-        elm.getGrid = function() {
-            if(grid !== null && typeof grid.isGrid == 'boolean') {
-                return grid;
-            } else {
-                return null;
-            }
-        }
-
-        // Make this element draggable
-        ctjs.drag.bind(elm);
-
-        return elm;
-    },
-    gridElement: function() {
+ctjs.grid = {
+    element: function(large) {
         var grid = document.createElement('span');
         var hasIngredient = false;
         var ingredient = null;
 
         grid.isGrid = true;
-        grid.className = 'grid';
+        grid.className = 'grid' + (large ? '-large' : '');
 
         grid.attachIngredient = function(ingredientToAttach) {
-            grid.hasIngredient = true;
+            hasIngredient = true;
+            ingredient = ingredientToAttach;
 
             // Detach from the original grid
-            var originalGrid = ingredientToAttach.getGrid();
-            if(originalGrid !== null) {
-                originalGrid.detachIngredient();
+            var sourceGrid = ingredientToAttach.getGrid();
+            if(sourceGrid !== null) {
+                sourceGrid.detachIngredient();
             }
 
-            // Attach to new grid
-            grid.innerHTML = '';
+            // Attach to this grid
             grid.appendChild(ingredientToAttach);
-            console.log(ingredientToAttach);
             ctjs.drag.resetElementPosition(ingredientToAttach);
         }
         grid.detachIngredient = function() {
@@ -71,10 +87,27 @@ var ctjs = {
 
         return grid;
     }
-};
+}
 
-ctjs.grid = {
+ctjs.ingredient = {
+    element: function() {
+        var elm = document.createElement('img');
+        elm.className = 'ingredient';
+        elm.src = 'http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Oak_Wood_Planks.png?version=a3f9f595f866696034eff1e38067789c';
+        elm.getGrid = function() {
+            var grid = elm.parentNode;
+            if(grid !== null && typeof grid.isGrid == 'boolean') {
+                return grid;
+            } else {
+                return null;
+            }
+        }
 
+        // Make this element draggable
+        ctjs.drag.bind(elm);
+
+        return elm;
+    }
 }
 
 ctjs.drag = {
