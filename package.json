@@ -1,0 +1,32 @@
+{
+  "name": "crafting-table-js",
+  "version": "0.0.1",
+  "description": "Minecraft crafting table written in Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/willybarro/crafting-table-js.git"
+  },
+  "keywords": [
+    "minecraft",
+    "crafting",
+    "table"
+  ],
+  "author": "Willy Barro",
+  "license": "LGPL",
+  "bugs": {
+    "url": "https://github.com/willybarro/crafting-table-js/issues"
+  },
+  "homepage": "https://github.com/willybarro/crafting-table-js",
+  "devDependencies": {
+    "gulp": "^3.8.0",
+    "gulp-gh-pages": "^0.3.2",
+    "karma": "^0.12.16",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "lodash": "^2.4.1"
+  }
+}
