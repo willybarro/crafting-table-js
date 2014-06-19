@@ -3,9 +3,16 @@
 <head>
 	<title></title>
 	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="js/draggabilly/draggabilly.pkgd.min.js"></script>
-	<script src="js/ctjs/minecraft.js"></script>
-	<script src="js/ctjs/ctjs.js"></script>
+	<script src="node_modules/domready/ready.min.js"></script>
+	<script src="src/draggabilly/draggabilly.pkgd.min.js"></script>
+	<script src="src/ctjs/ingredients.js"></script>
+	<script src="src/ctjs/minecraft.js"></script>
+	<script src="src/ctjs/ctjs.js"></script>
+	<script>
+		domready(function() {
+			ctjs.init();
+		});
+	</script>
 	<link rel="stylesheet" href="index.css" media="all" />
 	<link rel="stylesheet" href="font/minecraftfont/font.css">
 </head>

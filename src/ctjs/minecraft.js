@@ -1,48 +1,5 @@
-var ingredient = function(name, recipe, image) {
-    this.name = name;
-    this.recipe = recipe;
-    this.image = image;
-
-    return this;
-}
-
-var bo = {
-	'nil': 'nil',
-	'woodPlank': 'woodPlank',
-	'stick': 'stick'
-}
-var ingredients = {};
-ingredients.nil = new ingredient(
-    'nil',
-    null,
-    ''
-);
-ingredients.woodPlank = new ingredient(
-    'woodPlank',
-    null, 
-    ''
-);
-ingredients.stick = new ingredient(
-    'stick',
-    [ingredients.woodPlank, ingredients.nil, ingredients.nil,
-	ingredients.woodPlank, ingredients.nil, ingredients.nil,
-	ingredients.nil, ingredients.nil, ingredients.nil],
-    ''
-);
-ingredients.axe = new ingredient(
-    'axe',
-    [ingredients.woodPlank, 	ingredients.woodPlank, ingredients.nil,
-	ingredients.nil, 		ingredients.stick, ingredients.nil,
-	ingredients.nil, 		ingredients.stick, ingredients.nil],
-    ''
-);
-var nilTable = [
-	[bo.nil,	bo.nil,	bo.nil],
-	[bo.nil,	bo.nil,	bo.nil],
-	[bo.nil,	bo.nil,	bo.nil]
-];
-
 var table = {
+    ingredients: [],
 	match: function(innerTable)
 	{
         innerTable = table.planify(innerTable);
@@ -58,7 +15,7 @@ var table = {
             }
 
 			for(var i = 0; i < object.recipe.length; i++) {
-                if(object.recipe[i].name == innerTable[i].name) {
+                if(object.recipe[i].id_mc == innerTable[i].id_mc) {
 					matches++;
 				}
 			}
@@ -74,7 +31,7 @@ var table = {
         var plannified = [];
         var firstObjectFound = false;
         for(var i = 0; i < table.length; i++) {
-            if(table[i].name != 'nil') {
+            if(table[i] !== 0) {
                 firstObjectFound = true;
             }
 
@@ -85,7 +42,7 @@ var table = {
 
         // Fill table with nil objects
         for(var i = plannified.length; i < 9; i++) {
-            plannified.push(ingredients.nil);
+            plannified.push(ingredients.air);
         }
 
         return plannified;

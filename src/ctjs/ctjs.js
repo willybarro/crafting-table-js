@@ -1,7 +1,9 @@
-var ctjs = function() {
+var ctjs = {};
+ctjs.init = function() {
+    ingredients.init();
     ctjs.craftingTable.init();
     ctjs.inventory.init();
-};
+}
 
 ctjs.craftingTable = {
     ingredients: [],
@@ -246,12 +248,3 @@ var table = {
         return newObject;
     }
 }
-
-var testObject = [
-    [bo.nil, bo.nil, bo.nil],
-    [bo.nil, bo.nil, bo.woodPlank],
-    [bo.nil, bo.nil, bo.woodPlank]
-];
-
-var d = table.match(testObject);
-console.log(d);
