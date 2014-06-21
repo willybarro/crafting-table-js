@@ -55,13 +55,15 @@ class Ingredient {
 
 $ingredients = array();
 $ingredient = new Ingredient();
-for($i = 0; $i <= 50; $i++) {
-	echo '.';
-	$ingredients[(string)$i] = $ingredient->getIngredient(1, $i);
+// for($i = 0; $i <= 50; $i++) {
+// 	echo '.';
+// 	$ingredients[(string)$i] = $ingredient->getIngredient(1, $i);
 
-	if($i > 0 && $i % 30 === 0) {
-		echo PHP_EOL;
-	}
-}
+// 	if($i > 0 && $i % 30 === 0) {
+// 		echo PHP_EOL;
+// 	}
+// }
+
+$ingredients[] = $ingredient->getIngredient(1, 17);
 
 echo json_encode($ingredients);

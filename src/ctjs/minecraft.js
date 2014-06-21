@@ -1,37 +1,41 @@
-var table = {
-    ingredients: [],
-	match: function(innerTable)
-	{
-        innerTable = table.planify(innerTable);
+var Table = function(ingredients) {
+    var pub = this;
+	pub.match = function(innerTable)
+    {
+        innerTable = pub.planify(innerTable);
 
-		var retObject = ingredients.nil;
-		for(objectName in ingredients) {
-			var object = ingredients[objectName];
+		var retObject = null;
+        var ingList = ingredients.getList();
+		for(objectName in ingList) {
+			var object = ingredients.get(objectName);
+            var currentRecipe = object.recipe;
 			var matches = 0;
 
             // If it is a base object, ignore
-            if(object.recipe == null) {
+            if(currentRecipe == null) {
                 continue;
             }
+            currentRecipe = pub.convertNumericToObjectRecipe(currentRecipe);
+            currentRecipe = pub.planify(currentRecipe);
 
-			for(var i = 0; i < object.recipe.length; i++) {
-                if(object.recipe[i].id_mc == innerTable[i].id_mc) {
-					matches++;
-				}
-			}
+            for(a in currentRecipe) {
+                if(currentRecipe[a].id == innerTable[a].id) {
+                    matches++;
+                }
+            }
 
-			if(matches == object.recipe.length) {
-				return ingredients[objectName];
+			if(matches == currentRecipe.length) {
+				retObject = ingredients.get(objectName);
 			}
 		}
 
 		return retObject;
-	},
-    planify: function(table) {
+	}
+    pub.planify = function(table) {
         var plannified = [];
         var firstObjectFound = false;
         for(var i = 0; i < table.length; i++) {
-            if(table[i] !== 0) {
+            if(typeof(table[i]) == 'object' && table[i].name !== 'air') {
                 firstObjectFound = true;
             }
 
@@ -40,11 +44,19 @@ var table = {
             }
         }
 
-        // Fill table with nil objects
+        // Fill table with air objects
         for(var i = plannified.length; i < 9; i++) {
             plannified.push(ingredients.air);
         }
 
         return plannified;
+    }
+    pub.convertNumericToObjectRecipe = function(recipe) {
+        var outRecipe = [];
+        for(a in recipe) {
+            outRecipe.push(ingredients.getById(recipe[a]));
+        }
+
+        return outRecipe;
     }
 }

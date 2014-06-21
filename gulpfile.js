@@ -9,7 +9,7 @@ var karmaCommonConf = {
   browsers: ['PhantomJS'],
   frameworks: ['jasmine'],
   files: [
-    'src/**/minecraft.js',
+    'src/**/*.js',
     'test/**/*.spec.js'
   ]
 };
