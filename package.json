@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/willybarro/crafting-table-js",
   "dependencies": {
-    "domready": "^1.0.5"
   },
   "devDependencies": {
     "gulp": "^3.8.0",
