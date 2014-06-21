@@ -21,6 +21,9 @@
     "url": "https://github.com/willybarro/crafting-table-js/issues"
   },
   "homepage": "https://github.com/willybarro/crafting-table-js",
+  "dependencies": {
+    "domready": "^1.0.5"
+  },
   "devDependencies": {
     "gulp": "^3.8.0",
     "gulp-gh-pages": "^0.3.2",
