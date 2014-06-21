@@ -9,8 +9,14 @@ var karmaCommonConf = {
   browsers: ['PhantomJS'],
   frameworks: ['jasmine'],
   files: [
+    // Fixtures
+    'test/ctjs/mock/*.js',
+
+    // App
     'src/**/*.js',
-    'test/**/*.spec.js'
+
+    // Tests
+    'test/**/*.spec.js',
   ]
 };
 

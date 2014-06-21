@@ -8,30 +8,30 @@ var Ingredient = function(id, name, full_name, recipe, image, stackable, rawData
 	this.name = name;
 	this.recipe = recipe;
     this.full_name = full_name;
-    this.image = image;
+    this.image = '/img/icons/' + this.name.replace(/_/g, '') + '_icon32.png';
     this.stackable = stackable;
     this.rawData = rawData;
 }
 
-var Ingredients = function(inList) {
+var Ingredients = function(ingredients) {
 	var namedList = {};
 	var numericList = {};
 	var pub = this;
 	pub.air = new Ingredient(0, 'air');
 	pub.getList = function() {
-		return namedList;
+		return numericList;
 	}
 	pub.setList = function(inList) {
-		namedList = inList;
+		numericList = inList;
 
-		// Populate numeric-indexed list
-		for(a in inList) {
-			var ing = inList[a];
-			numericList[ing.id] = ing;
+		// Populate name-indexed list
+		for(i in inList) {
+			var ing = inList[i];
+			namedList[ing.name] = ing;
 		}
 	}
 	var normalizeIngredientName = function(name) {
-		return name.toLowerCase().replace(' ', '_');
+		return name.toLowerCase().replace(/\s/g, '_');
 	}
 	pub.get = function(name) {
 		if(typeof namedList[name] === 'undefined') {
@@ -47,19 +47,14 @@ var Ingredients = function(inList) {
 			throw new Error('Ingredient not found by id: ' + id);
 		}
 	}
-	var loadListFromAjax = function() {
-		$.ajax({
-			url: 'src/ingredients.json',
-			success: function(data) {
-				pub.setListFromJson(data);
-			}
-		});
-	}
 	pub.setListFromJson = function(data) {
-		var newList = {};
-		var newNumericList = [];
+		var newList = [];
 		for(ingredientKey in data) {
 			var ingData = data[ingredientKey];
+			if(typeof(ingData.l_name) !== 'string') {
+				continue;
+			}
+
 			var normalizedName = normalizeIngredientName(ingData.l_name);
 			var ing = new Ingredient(
 				ingData.id_mc,
@@ -70,8 +65,10 @@ var Ingredients = function(inList) {
 				ingData.stackable,
 				ingData
 			);
-			newList[normalizedName] = ing;
+			newList[ingData.id_mc] = ing;
 
+			// Although we have an air object set by default, if the inner json 
+			// has air ingredient we set it anyway.
 			if(normalizedName == 'air') {
 				pub.air = ing;
 			}
@@ -80,8 +77,6 @@ var Ingredients = function(inList) {
 		pub.setList(newList);
 	}
 
-	// Initialize list
-	if(typeof list !== "undefined") {
-		pub.setList(list);
-	}
+	// Initialization
+	pub.setListFromJson(ingredients);
 }

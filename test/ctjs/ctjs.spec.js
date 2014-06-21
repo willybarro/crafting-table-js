@@ -1,19 +1,7 @@
 describe('Matcher', function() {
 	var ings, table = null;
 	beforeEach(function() {
-		var mockIngredientsJson = [
-			{"id_mc":"0","stackable":0,"l_name":"Air","ot_name":"Non-Solid Block","id_source_type":0,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/0.png"},
-			{"id_mc":"1","stackable":64,"l_name":"Stone","ot_name":"Solid Block","id_source_type":3,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/1.png"},
-			{"id_mc":"2","stackable":0,"l_name":"Grass","ot_name":"Solid Block","id_source_type":0,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/2.png"},
-			{"id_mc":"3","stackable":64,"l_name":"Dirt","ot_name":"Solid Block","id_source_type":2,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/3.png"},
-			{"id_mc":"4","stackable":64,"l_name":"Cobblestone","ot_name":"Solid Block","id_source_type":2,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/4.png"},
-			{"id_mc":"5","stackable":64,"l_name":"Wooden Plank","ot_name":"Solid Block","id_source_type":1,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/5.png","recipe":[0,0,0,0,17,0,0,0,0]},
-			{"id_mc":"17","stackable":64,"l_name":"Oak Wood","ot_name":"Solid Block","id_source_type":2,"image":"http:\/\/minecraftdatavalues.com\/images\/1\/17.png"},
-			{"id_mc":"280","stackable":64,"l_name":"Stick","ot_name":"Raw Material","id_source_type":1,"image":"http:\/\/minecraftdatavalues.com\/images\/2\/280.png","recipe":[0,0,0,0,5,0,0,5,0]}
-		];
-
-		ings = new Ingredients;
-		ings.setListFromJson(mockIngredientsJson);
+		ings = new Ingredients(mockIngredients);
 
 		table = new Table(ings);
 	});
@@ -60,36 +48,46 @@ describe('Matcher', function() {
 		    ings.air, ings.air, ings.air
 		];
 
-		expect(table.match(testObject)).toBe(ings.get('stick'));
+		expect(table.match(testObject)).toEqual(ings.get('stick'));
 	});
 
-	// it('Matches a stick with ingredients in a offseted but still valid position (1)', function() {
-	// 	var testObject = [
-	// 	    ings.air, ings.woodPlank, 	ings.air,
-	// 	    ings.air, ings.woodPlank, 	ings.air,
-	// 	    ings.air, ings.air, 		ings.air
-	// 	];
+	it('Matches a stick with ingredients in a offseted but still valid position (1)', function() {
+		var testObject = [
+		    ings.air, ings.get('wooden_plank'), ings.air,
+		    ings.air, ings.get('wooden_plank'), ings.air,
+		    ings.air, ings.air, ings.air
+		];
 
-	// 	expect(table.match(testObject)).toBe(ings.stick);
-	// });
+		expect(table.match(testObject)).toEqual(ings.get('stick'));
+	});
 
-	// it('Matches a stick with ingredients in a offseted but still valid position (2)', function() {
-	// 	var testObject = [
-	// 	    ings.air, ings.air, 		ings.air,
-	// 	    ings.woodPlank, ings.air, 	ings.air,
-	// 	    ings.woodPlank, ings.air, 	ings.air
-	// 	];
+	it('Matches a stick with ingredients in a offseted but still valid position (2)', function() {
+		var testObject = [
+		    ings.air, ings.air, ings.air,
+		    ings.get('wooden_plank'), ings.air, ings.air,
+		    ings.get('wooden_plank'), ings.air, ings.air
+		];
 
-	// 	expect(table.match(testObject)).toBe(ings.stick);
-	// });
+		expect(table.match(testObject)).toEqual(ings.get('stick'));
+	});
 
-	// it('Do not match a stick with all ingredients but in a wrong position', function() {
-	// 	var testObject = [
-	// 	    ings.air, ings.woodPlank, 	ings.woodPlank,
-	// 	    ings.air, ings.air, 		ings.air,
-	// 	    ings.air, ings.air, 		ings.air
-	// 	];
+	it('Do not match a stick with all necessary ingredients but in an invalid position', function() {
+		var testObject = [
+		    ings.air, ings.get('wooden_plank'), ings.get('wooden_plank'),
+		    ings.air, ings.air, ings.air,
+		    ings.air, ings.air, ings.air
+		];
 
-	// 	expect(table.match(testObject)).toBe(ings.air);
-	// });
+		expect(table.match(testObject)).toEqual(null);
+	});
+
+	it('Create a wooden plank from oak wood', function() {
+		var testObject = [
+		    ings.air, ings.get('oak_wood'), ings.air,
+		    ings.air, ings.air, ings.air,
+		    ings.air, ings.air, ings.air
+		];
+
+		expect(table.match(testObject)).toEqual(ings.get('wooden_plank'));
+	});
 });

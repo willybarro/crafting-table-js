@@ -53,17 +53,19 @@ class Ingredient {
 	}
 }
 
+$arTypesToDownload = array(
+	array('type' => 1, 'from' => 0, 'to' => 175),
+	array('type' => 2, 'from' => 256, 'to' => 408),
+	array('type' => 2, 'from' => 2256, 'to' => 2266),
+);
+
 $ingredients = array();
 $ingredient = new Ingredient();
-// for($i = 0; $i <= 50; $i++) {
-// 	echo '.';
-// 	$ingredients[(string)$i] = $ingredient->getIngredient(1, $i);
-
-// 	if($i > 0 && $i % 30 === 0) {
-// 		echo PHP_EOL;
-// 	}
-// }
-
-$ingredients[] = $ingredient->getIngredient(1, 17);
+foreach($arTypesToDownload as $type) {
+	for($i = $type['from']; $i <= $type['to']; $i++) {
+		$ingredients[] = $ingredient->getIngredient($type['type'], $i);
+	}
+}
 
 echo json_encode($ingredients);
+echo PHP_EOL;

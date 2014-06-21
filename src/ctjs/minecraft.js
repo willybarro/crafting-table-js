@@ -1,4 +1,8 @@
 var Table = function(ingredients) {
+    if(!ingredients) {
+        throw new Error('Ingredients can not be undefined.');
+    }
+
     var pub = this;
 	pub.match = function(innerTable)
     {
@@ -7,7 +11,7 @@ var Table = function(ingredients) {
 		var retObject = null;
         var ingList = ingredients.getList();
 		for(objectName in ingList) {
-			var object = ingredients.get(objectName);
+			var object = ingredients.getById(objectName);
             var currentRecipe = object.recipe;
 			var matches = 0;
 
@@ -25,7 +29,7 @@ var Table = function(ingredients) {
             }
 
 			if(matches == currentRecipe.length) {
-				retObject = ingredients.get(objectName);
+				retObject = ingredients.getById(objectName);
 			}
 		}
 

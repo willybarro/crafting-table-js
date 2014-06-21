@@ -1,42 +1,78 @@
 var ctjs = {};
+var ings = null;
+var table = null;
+var airElement = null;
 ctjs.init = function() {
-    ingredients.init();
-    ctjs.craftingTable.init();
-    ctjs.inventory.init();
+    $.ajax({
+        url: 'src/ingredients.json',
+        success: function(data) {
+            ings = new Ingredients(data);
+            table = new Table(ings);
+
+            ctjs.craftingTable.init();
+            ctjs.inventory.init();
+
+            airElement = ctjs.ingredient.element(ings.get('air'));
+        }
+    });
 }
 
 ctjs.craftingTable = {
-    ingredients: [],
+    grid: [],
+    outputGridElm: null,
+    getIngredients: function() {
+        var outIngs = [];
+        var gridElms = ctjs.craftingTable.grid;
+        for(i in gridElms) {
+            outIngs.push(gridElms[i].getIngredient());
+        }
+
+        return outIngs;
+    },
     init: function() {
         var craftingTable = document.querySelector('#crafting-table');
         var craftingTableOutput = document.querySelector('#crafting-table-output');
 
         // Create grid elements of the crafting table
         for(var i=0; i<9; i++) {
-            var gridElm = new ctjs.grid.element();
+            var gridElm = new ctjs.grid.element(true);
             craftingTable.appendChild(gridElm);
-            ctjs.craftingTable.ingredients.push(gridElm);
+            ctjs.craftingTable.grid.push(gridElm);
         }
 
         // Create output grid
-        var outputElm = new ctjs.grid.element(true);
+        var outputElm = new ctjs.grid.element(false, true);
         craftingTableOutput.appendChild(outputElm);
+        ctjs.craftingTable.outputGridElm = outputElm;
+
+        // Handles changes on crafting table
+        $(document).bind('crafting-workspace-change', ctjs.craftingTable.change);
     },
     getIngredientAt: function(index) {
         var ingredient = null;
-        if(typeof ctjs.craftingTable.ingredients[index] !== 'undefined') {
-            ingredient = ctjs.craftingTable.ingredients[index].getIngredient();
+        if(typeof ctjs.craftingTable.grid[index] !== 'undefined') {
+            ingredient = ctjs.craftingTable.grid[index].getIngredient();
         }
         return ingredient;
     },
-    glad: function(bol)
-    {
-        return !bol;
+    change: function() {
+        // Clean up the output grid element
+        ctjs.craftingTable.outputGridElm.detachIngredient();
+
+        // Check if there's any match
+        var outputIngredient = table.match(ctjs.craftingTable.getIngredients());
+        if(outputIngredient) {
+            var outputElement = ctjs.ingredient.element(outputIngredient);
+            ctjs.craftingTable.outputGridElm.attachIngredient(outputElement);
+        }
     }
 }
 
 ctjs.inventory = {
-    ingredients: [],
+    initialIngredients: [
+        'oak_wood'
+    ],
+    grid: [],
     init: function(numGrid) {
         var inventory = document.querySelector('#inventory');
         var numGrid = numGrid || 60;
@@ -44,44 +80,72 @@ ctjs.inventory = {
         for(var i=0; i<numGrid; i++) {
             var gridElm = new ctjs.grid.element();
             inventory.appendChild(gridElm);
-            ctjs.inventory.ingredients.push(gridElm);
+            ctjs.inventory.grid.push(gridElm);
+        }
 
-            if(i == 0) {
-                gridElm.attachIngredient(new ctjs.ingredient.element());
-            }
+        ctjs.inventory.attachInitialIngredients();
+    },
+    attachInitialIngredients: function() {
+        var initialIngredients = ctjs.inventory.initialIngredients;
+        for(i in initialIngredients) {
+            var ingredient = ings.get(initialIngredients[i]);
+            var ingredientToAttach = new ctjs.ingredient.element(ingredient);
+
+            // Attach
+            ctjs.inventory.grid[i].attachIngredient(ingredientToAttach);
         }
     }
 }
 
 ctjs.grid = {
-    element: function(large) {
+    element: function(craftingWorkspace, large) {
         var grid = document.createElement('span');
         var hasIngredient = false;
-        var ingredient = null;
+        var ingredientElm = null;
+        var craftingWorkspace = craftingWorkspace || false;
 
         grid.isGrid = true;
         grid.className = 'grid' + (large ? '-large' : '');
+        if(craftingWorkspace) {
+            grid.className += ' grid-crafting';
+        }
 
         grid.attachIngredient = function(ingredientToAttach) {
             hasIngredient = true;
-            ingredient = ingredientToAttach;
+            ingredientElm = ingredientToAttach;
+            var changedCraftingWorkspace = false;
 
             // Detach from the original grid
             var sourceGrid = ingredientToAttach.getGrid();
             if(sourceGrid !== null) {
                 sourceGrid.detachIngredient();
+
+                if($(sourceGrid).hasClass('grid-crafting')) {
+                    $(document).trigger('crafting-workspace-change');
+                }
             }
 
-            // Attach to this grid
+            // Attach the ingredient to myself
             grid.appendChild(ingredientToAttach);
             ctjs.drag.resetElementPosition(ingredientToAttach);
+
+            // Notify crafting table that it was changed.            
+            if($(grid).hasClass('grid-crafting')) {
+                $(document).trigger('crafting-workspace-change');
+            }
         }
         grid.detachIngredient = function() {
             hasIngredient = false;
-            ingredient = null;
+            ingredientElm = null;
+            this.innerHTML = '';
         }
         grid.getIngredient = function() {
-            return ingredient;
+            var ing = ings.air;
+            if(ingredientElm !== null) {
+                ing = ingredientElm.ingredient;
+            }
+
+            return ing;
         }
         grid.hasIngredient = function() {
             return hasIngredient;
@@ -92,10 +156,12 @@ ctjs.grid = {
 }
 
 ctjs.ingredient = {
-    element: function() {
+    element: function(ingredient) {
         var elm = document.createElement('img');
+        elm.ingredient = ingredient;
         elm.className = 'ingredient';
-        elm.src = 'http://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d3/Grid_Oak_Wood_Planks.png?version=a3f9f595f866696034eff1e38067789c';
+        elm.src = elm.ingredient.image;
+
         elm.getGrid = function() {
             var grid = elm.parentNode;
             if(grid !== null && typeof grid.isGrid == 'boolean') {
@@ -148,103 +214,3 @@ ctjs.drag = {
         ctjs.drag.moveIngredient(element, 0, 0);
     }
 };
-
-
-
-
-
-
-
-
-
-
-/**
- * Matcher
- */
-var bo = {
-    'nil': 'nil',
-    'woodPlank': 'woodPlank',
-    'stick': 'stick'
-}
-var objects = {
-    nil: [
-        [bo.nil,    bo.nil,             bo.nil],
-        [bo.nil,    bo.nil,             bo.nil],
-        [bo.nil,    bo.nil,             bo.nil]
-    ],
-    stick: [
-        [bo.woodPlank,  bo.nil,         bo.nil],
-        [bo.woodPlank,  bo.nil,         bo.nil],
-        [bo.nil,        bo.nil,         bo.nil]
-    ],
-    axe: [
-        [bo.woodPlank,  bo.woodPlank,   bo.nil],
-        [bo.nil,        bo.stick,       bo.nil],
-        [bo.nil,        bo.stick,       bo.nil]
-    ]
-};
-
-var table = {
-    defineObjectBoundaries: function(tb)
-    {
-        yFirstObject = -1;
-        xFirstObject = -1;
-        for(y in tb) {
-            for(x in tb[y]) {
-                if(tb[y][x] != bo.nil) {
-                    if(xFirstObject == -1 || x < xFirstObject) {
-                        xFirstObject = x;
-                    }
-
-                    if(yFirstObject == -1 || y < yFirstObject) {
-                        yFirstObject = y;
-                    }
-                }
-            }
-        }
-
-        return {x: parseInt(xFirstObject), y: parseInt(yFirstObject)};
-    },
-    pullItemsToLeftCorner: function(tab)
-    {
-        var boundaries = table.defineObjectBoundaries(tab);
-        tab = table.offsetGetObject(tab, boundaries.x, boundaries.y);
-        return tab;
-    },
-    match: function(innerTable)
-    {   
-        innerTable = table.pullItemsToLeftCorner(innerTable);
-
-        var retObject = null;
-        for(objectName in objects) {
-            var object = objects[objectName];
-            var matches = 0;
-
-            for(var y = 0; y < 3; y++) {
-                for(var x = 0; x < 3; x++) {
-                    if(object[y][x] == innerTable[y][x]) {
-                        matches++;
-                    }
-                }
-            }
-
-            if(matches == 9) {
-                return objectName;
-            }
-        }
-
-        return retObject;
-    },
-    offsetGetObject: function(object, offsetX, offsetY) {
-        var newObject = objects.nil;
-        for(var y = 0; y < object.length; y++) {
-            for(var x = 0; x < object[y].length; x++) {
-                if(object[y][x] != bo.nil) {
-                    newObject[y - offsetY][x - offsetX] = object[y][x];
-                }
-            }
-        }
-
-        return newObject;
-    }
-}
