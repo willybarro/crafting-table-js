@@ -20,6 +20,18 @@ ctjs.init = function() {
 ctjs.craftingTable = {
     grid: [],
     outputGridElm: null,
+    clear: function() {
+        var grid = ctjs.craftingTable.grid;
+        for(i in grid) {
+            var gridElm = grid[i];
+            if(gridElm) {
+                gridElm.detachIngredient();
+            }
+        }
+    },
+    clearOutput: function() {
+        ctjs.craftingTable.outputGridElm.detachIngredient();
+    },
     getIngredients: function() {
         var outIngs = [];
         var gridElms = ctjs.craftingTable.grid;
@@ -44,9 +56,6 @@ ctjs.craftingTable = {
         var outputElm = new ctjs.grid.element(false, true);
         craftingTableOutput.appendChild(outputElm);
         ctjs.craftingTable.outputGridElm = outputElm;
-
-        // Handles changes on crafting table
-        $(document).bind('crafting-workspace-change', ctjs.craftingTable.change);
     },
     getIngredientAt: function(index) {
         var ingredient = null;
@@ -57,7 +66,8 @@ ctjs.craftingTable = {
     },
     change: function() {
         // Clean up the output grid element
-        ctjs.craftingTable.outputGridElm.detachIngredient();
+        ctjs.craftingTable.clearOutput();
+        
 
         // Check if there's any match
         var outputIngredient = table.match(ctjs.craftingTable.getIngredients());
@@ -70,7 +80,10 @@ ctjs.craftingTable = {
 
 ctjs.inventory = {
     initialIngredients: [
-        'oak_wood'
+        'oak_wood',
+        'oak_wood',
+        'oak_wood',
+        'oak_wood',
     ],
     grid: [],
     init: function(numGrid) {
@@ -98,14 +111,14 @@ ctjs.inventory = {
 }
 
 ctjs.grid = {
-    element: function(craftingWorkspace, large) {
+    element: function(craftingWorkspace, output) {
         var grid = document.createElement('span');
         var hasIngredient = false;
         var ingredientElm = null;
         var craftingWorkspace = craftingWorkspace || false;
 
         grid.isGrid = true;
-        grid.className = 'grid' + (large ? '-large' : '');
+        grid.className = 'grid' + (output ? '-large output' : '');
         if(craftingWorkspace) {
             grid.className += ' grid-crafting';
         }
@@ -121,7 +134,12 @@ ctjs.grid = {
                 sourceGrid.detachIngredient();
 
                 if($(sourceGrid).hasClass('grid-crafting')) {
-                    $(document).trigger('crafting-workspace-change');
+                    ctjs.craftingTable.change();
+                }
+
+                // If we are detaching from the output, clear the crafting table workspace
+                if($(sourceGrid).hasClass('output')) {
+                    ctjs.craftingTable.clear();
                 }
             }
 
@@ -131,13 +149,15 @@ ctjs.grid = {
 
             // Notify crafting table that it was changed.            
             if($(grid).hasClass('grid-crafting')) {
-                $(document).trigger('crafting-workspace-change');
+                ctjs.craftingTable.change();
             }
         }
-        grid.detachIngredient = function() {
-            hasIngredient = false;
-            ingredientElm = null;
-            this.innerHTML = '';
+        grid.detachIngredient = function(isReattaching) {
+            if(hasIngredient) {
+                hasIngredient = false;
+                ingredientElm = null;
+                this.innerHTML = '';
+            }
         }
         grid.getIngredient = function() {
             var ing = ings.air;
