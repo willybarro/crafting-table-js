@@ -187,6 +187,7 @@ ctjs.ingredient = {
         elm.ingredient = ingredient;
         elm.className = 'ingredient';
         elm.src = elm.ingredient.image;
+        elm.width = elm.height = 32;
 
         elm.getGrid = function() {
             var grid = elm.parentNode;

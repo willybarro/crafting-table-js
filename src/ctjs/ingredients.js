@@ -8,7 +8,7 @@ var Ingredient = function(id, name, full_name, recipe, image, stackable, rawData
 	this.name = name;
 	this.recipe = recipe;
     this.full_name = full_name;
-    this.image = 'img/icons/' + this.name.replace(/_/g, '') + '_icon32.png';
+    this.image = 'img/icons/' + this.id + '.png';
     this.stackable = stackable;
     this.rawData = rawData;
 }
