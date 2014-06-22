@@ -2,7 +2,7 @@
 
 A Minecraft Crafting Table written in Javascript. The goal of this project is to let you build every item that you could on the in-game crafting table.
 
-**[Try it!](http://willybarro.github.io/crafting-table-js/)**
+<a href="http://willybarro.github.io/crafting-table-js/" target="_blank">Try it!</a>
 
 ## Why you spent time coding this?
 Because it's cool. Isn't it? :)
