@@ -11,6 +11,7 @@ Because it's cool. Isn't it? :)
 - Drop (of drag-and-drop) does not work on mobile devices
 
 ## TODO
+- Add an item search feature, to let the user search for any block he wishes.
 - Disable user drag ingredient to output grid element
 - Double click remove output and add to the inventory
 - Stack similar ingredients
