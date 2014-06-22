@@ -1,15 +1,15 @@
-crafting-table-js
-=================
+# Crafting Table JS
 
-Minecraft Crafting Table written in Javascript.
+A Minecraft Crafting Table written in Javascript. The goal of this project is to let you build every item that you could on the in-game crafting table.
 
+## Why you spent time coding this?
+Because it's cool. Isn't it? :)
 
-Known issues:
-- on-off icons
-- Drop does not work on mobile
+## Known issues
+- Drop (of drag-and-drop) does not work on mobile devices
 
-TODO
+## TODO
 - Disable user drag ingredient to output grid element
 - Double click remove output and add to the inventory
 - Stack similar ingredients
-- responsive layout for mobile devices
+- Responsive layout for mobile devices
