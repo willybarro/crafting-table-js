@@ -82,8 +82,14 @@ ctjs.inventory = {
     initialIngredients: [
         'oak_wood',
         'oak_wood',
-        'oak_wood',
-        'oak_wood',
+        'coal',
+        'stick',
+        'stick',
+        'stick',
+        'stick',
+        'stick',
+        'stick',
+        'stick',
     ],
     grid: [],
     init: function(numGrid) {
