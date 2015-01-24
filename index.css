@@ -19,6 +19,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 p{ margin: 10px 0;}
 
+input[type="text"] {
+	font-family: 'minecraftfont';
+	font-size: 1em;
+	border: 2px solid #404040;
+	background: #8B8B8B;
+	padding: 2px;
+}
+
 .clearfix:before,.clearfix:after{content:"";display:table}
 .clearfix:after{clear:both}
 
@@ -94,4 +102,8 @@ p{ margin: 10px 0;}
 
 .inventory-holder {
 	margin-top: 20px;
+}
+
+#item-search-form {
+	margin-bottom: 2px;
 }

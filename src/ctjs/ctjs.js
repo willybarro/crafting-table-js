@@ -11,6 +11,7 @@ ctjs.init = function() {
 
             ctjs.craftingTable.init();
             ctjs.inventory.init();
+            ctjs.itemList.init();
 
             airElement = ctjs.ingredient.element(ings.get('air'));
         }
@@ -116,6 +117,63 @@ ctjs.inventory = {
     }
 }
 
+ctjs.itemList = {
+    lastSearch: '',
+    grid: [],
+    init: function(numGrid) {
+        ctjs.itemList.attachIngredients();
+        ctjs.itemList.initSearchForm();
+    },
+    attachIngredients: function() {
+        var itemList = document.querySelector('#item-list');
+        var ingredientList = ings.getList();
+        for(var i=0 in ingredientList) {
+            var ingredient = ingredientList[i];
+
+            if(ingredient.name === 'air') {
+                continue;
+            }
+
+            var gridElm = new ctjs.grid.element();
+            itemList.appendChild(gridElm);
+            ctjs.itemList.grid.push(gridElm);
+
+            gridElm.attachIngredient(new ctjs.ingredient.element(ingredient));
+        }
+    },
+    initSearchForm: function() {
+        var searchForm = document.querySelector('#item-search-form');
+        searchForm.onsubmit = function(e) { e.preventDefault() };
+
+        var inputSearch = document.querySelector('#item-search-input');
+        inputSearch.onkeyup = function(e) {
+            ctjs.itemList.performSearch(inputSearch.value);
+        }
+    },
+    /**
+     * Performance here really sucks.
+     * I need to revisit it to remove this O(n) complexity
+     */
+    performSearch: function(subject) {
+        if(subject === ctjs.itemList.lastSearch) {
+            return;
+        }
+        ctjs.itemList.lastSearch = subject;
+
+        var grid = ctjs.itemList.grid;
+        for(var i in grid) {
+            var gridElm = grid[i];
+            gridElm.show();
+
+            var fullName = gridElm.getIngredient().full_name;
+            var searchResult = fullName.toLowerCase().indexOf(subject);
+            if(searchResult === -1) {
+                gridElm.hide();
+            }
+        }
+    }
+}
+
 ctjs.grid = {
     element: function(craftingWorkspace, output) {
         var grid = document.createElement('span');
@@ -176,6 +234,13 @@ ctjs.grid = {
         grid.hasIngredient = function() {
             return hasIngredient;
         }
+        grid.show = function() {
+            this.style.display = '';
+        }
+        grid.hide = function() {
+            this.style.display = 'none';
+        }
+
 
         return grid;
     }
@@ -188,6 +253,7 @@ ctjs.ingredient = {
         elm.className = 'ingredient';
         elm.src = elm.ingredient.image;
         elm.width = elm.height = 32;
+        elm.title = elm.ingredient.full_name;
 
         elm.getGrid = function() {
             var grid = elm.parentNode;
